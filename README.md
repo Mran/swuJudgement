@@ -1,10 +1,34 @@
-# 西南大学自动教评(自动提交版)
+# swuJudgement(GUI && Automatic submission)
 
-### 一次非常大的改进是实现自动提交啦，用户只需输入用户名和密码即可完成评教
+##### A small software for Southwest University judgement automatically
 
+### <span id="release">Release</span>
+You can find the software at the following link:
 
-* 环境为Python 3.4.3,用到的python包有requests,bs4,re,lxml.
-* 运行Main.py,正确输入用户名和密码即可自动教评,用户,密码均未上传或保存到本地,可放心使用.
-* 默认是所有选项为优秀,最后一项为良好,您可以手动修改选项
+* [windows](https://github.com/xndxcsd/swuJudgement/releases/tag/1.0)
 
-#### 可执行文件和详细的说明待更新。
+### <span id = "requirements">Requirements</span>
+swuJudgement requires the following to run (of course the release require nothing):
+
+* Python 3.4.x+
+
+### <span id = "usage">Usage</span>
+It's very simple to use . Open it and get everything.
+
+In addition to the last item is a `鑹痐,the rest are `浼榒.
+If you want to make some change , help yourself to download the code and change
+the choices,but I strongly recommend that you don't do that because we write directly the
+choices in the code(not in a config file).
+
+### <span id = "contributing">Contributing</span>
+Please be free to contribute to swuJudgement ,
+clone this repo locally and
+commit your code on a separate branch.
+
+I strongly hope you can add the feature that people could make their own choices
+in the judgement.
+
+### <span id = "license">License</span>
+swuJudgement is licensed under the GPL license.
+
+Copyright 漏 2016 , xndxcsd
