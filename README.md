@@ -2,6 +2,7 @@
 
 ##### A small software for Southwest University judgement automatically
 
+![](https://img.shields.io/badge/python-3.4.*%2B-red.svg) ![](https://img.shields.io/badge/license-GPL-blue.svg)
 ### <span id="release">Release</span>
 You can find the software at the following link:
 

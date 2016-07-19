@@ -1,15 +1,19 @@
 # coding=utf-8
+
+import sys
+import os
+
 from urp.Save import save
 from urp.Submit import submit
 import tkinter as tk
 import threading
-
 __author__ = '陈思定'
-# reedit：
 # 重写Main，将评教/提交封装在save和submit中，传入参数实现自动提交
 # by 陈思定 2016/7/8
 
 window = tk.Tk()
+
+# reedit：
 window.title('swuJudgement')
 window.geometry('320x135')
 window.resizable(width=False,height=False)
@@ -25,7 +29,14 @@ tk.Entry(window, textvariable=password, show='*').grid(row=1, column=1)
 
 
 # 加一张西南大学开源协会的图片= =
-photo = tk.PhotoImage(file='photo.jpg')
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+
+    return os.path.join(os.path.abspath("."), relative_path)
+
+photo = tk.PhotoImage(file=resource_path('photo.jpg'))
 label = tk.Label(window, image=photo)
 label.image = photo
 label.grid(row=0, column=2, columnspan=2, rowspan=2, padx=5, pady=5)
@@ -41,13 +52,13 @@ def confirm():
     if u and p:
         try:
             threading.Thread(target=(lambda u, p:save(u,p) and submit(u,p))(u,p)).start()
-            massage.set('评教成功，请登录教务系统查看.')  # 帐户名或密码错误 or 网络问题
+            massage.set('评教成功')  # 帐户名或密码错误 or 网络问题
         except:
             massage.set('服务器拒绝了请求')  # 帐户名或密码错误 or 网络问题
 
 
 def cancel():
-    exit()  # 退出程序
+    sys.exit()  # 退出程序
 
 
 # 按钮绑定事件
