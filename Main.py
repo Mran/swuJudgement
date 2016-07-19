@@ -1,17 +1,73 @@
 # coding=utf-8
-__author__ = '张孟尧'
-from urp import Login
-from urp import GetBasicInfo
-from urp.util import StudentTotalInfo
-from urp import Judgment
 
-print("正确输入用户名和密码即可自动教评,用户,密码均未上传或保存到本地,可放心使用\n"
-      "默认是所有选项为优秀,最后一项为良好,您可以手动修改参数\n"
-      "本程序只是将选项勾选并保存,需要您手动点击提交.\n"
-      "自动提交可修改urp/Judgment.py中第36行的参数为1,再次运行程序即可自动提交.")
-urp = Login.loginSwuEms()
-user = StudentTotalInfo.userTotalInfo
-GetBasicInfo.getBasicInfo(urp, user)
-print(user.swuID)
-Judgment.judgment(urp, user)
-print("教评完毕,请登录教务系统查看是否成功.")
+import sys
+import os
+
+from urp.Save import save
+from urp.Submit import submit
+import tkinter as tk
+import threading
+__author__ = '陈思定'
+# 重写Main，将评教/提交封装在save和submit中，传入参数实现自动提交
+# by 陈思定 2016/7/8
+
+window = tk.Tk()
+
+# reedit：
+window.title('swuJudgement')
+window.geometry('320x135')
+window.resizable(width=False,height=False)
+
+# 用户输入区域
+tk.Label(window, text='账户:',font=("黑体", "12")).grid(row=0, column=0, sticky='e')
+tk.Label(window, text='密码:',font=("黑体","12")).grid(row=1, column=0, sticky='e')
+
+username = tk.StringVar()  # 绑定变量
+password = tk.StringVar()
+tk.Entry(window, textvariable=username).grid(row=0, column=1)  # 初始化文本框+绑定
+tk.Entry(window, textvariable=password, show='*').grid(row=1, column=1)
+
+
+# 加一张西南大学开源协会的图片= =
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+
+    return os.path.join(os.path.abspath("."), relative_path)
+
+photo = tk.PhotoImage(file=resource_path('photo.jpg'))
+label = tk.Label(window, image=photo)
+label.image = photo
+label.grid(row=0, column=2, columnspan=2, rowspan=2, padx=5, pady=5)
+
+
+def confirm():
+    global username
+    global password
+    global massage
+
+    u = username.get()
+    p = password.get()
+    if u and p:
+        try:
+            threading.Thread(target=(lambda u, p:submit(u,p))(u,p)).start()
+            massage.set('评教成功')  # 帐户名或密码错误 or 网络问题
+        except:
+            massage.set('服务器拒绝了请求')  # 帐户名或密码错误 or 网络问题
+
+
+def cancel():
+    sys.exit()  # 退出程序
+
+
+# 按钮绑定事件
+tk.Button(window, text='确认', width=6, command=confirm, font=("黑体","11")).grid(row=2, column=2)
+tk.Button(window, text='取消', width=6, command=cancel, font=("黑体", "11")).grid(row=2, column=3)
+
+# 用户的反馈消息
+massage = tk.StringVar()
+massage.set('贡献者：Mran & xndxcsd')
+tk.Label(window, textvariable=massage,font=('黑体','12','underline')).grid(row=2,column=0,columnspan=2,sticky='w')
+
+window.mainloop()
