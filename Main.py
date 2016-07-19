@@ -51,7 +51,7 @@ def confirm():
     p = password.get()
     if u and p:
         try:
-            threading.Thread(target=(lambda u, p:save(u,p) and submit(u,p))(u,p)).start()
+            threading.Thread(target=(lambda u, p:submit(u,p))(u,p)).start()
             massage.set('评教成功')  # 帐户名或密码错误 or 网络问题
         except:
             massage.set('服务器拒绝了请求')  # 帐户名或密码错误 or 网络问题
